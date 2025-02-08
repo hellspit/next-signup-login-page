@@ -24,10 +24,11 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    forgotPasswordToken: string,
-    forgotPasswordExpire: Date,
-    verifyToken: string,
-    verifyTokenExpire: Date,
+    forgotPasswordToken: { type: String },
+forgotPasswordExpire: { type: Date },
+verifyToken: { type: String },
+verifyTokenExpire: { type: Date },
+
 });
 
 const User = mongoose.users||mongoose.model('users', userSchema);
