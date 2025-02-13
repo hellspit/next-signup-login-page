@@ -64,7 +64,12 @@ export default function SignUp()
                 >
                     {buttonDisabled ? "Please fill all fields" : "Login"}
                 </button>
-            <Link href="/sign-up">Visit</Link>
+            <button
+                onClick={() => router.push("/sign-up")}
+                className="text-blue-500 hover:underline"
+            >
+                Want to sign up?
+            </button>
         </div>
     </div>
     
