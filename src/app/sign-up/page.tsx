@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 
-export default function Loginpage() {
+export default function SignupPage() {
     const router = useRouter();
     const [user, setUser] = useState({ email: "", password: "", username: "" });
     const [buttonDisabled, setButtonDisabled] = useState(true);
@@ -16,12 +16,18 @@ export default function Loginpage() {
 
     const onSignUp = async () => {
         try {
-            const res = await axios.post("/api/user/sign-up", user); // Ensure this is correct
-            console.log("Response:", res.data);
-            router.push("/login");
-        } catch (e: any) {
-            console.error("Signup Error:", e.response?.data || e.message);
-            toast.error(e.response?.data?.error || "Something went wrong");
+            const res = await axios.post("/api/user/sign-up", user);
+            console.log("Signup Successful:", res.data);
+            toast.success("Signup successful! Redirecting...");
+            setTimeout(() => router.push("/login"), 1500);
+        } catch (e: unknown) {
+            if (axios.isAxiosError(e)) {
+                console.error("Signup Error:", e.response?.data || e.message);
+                toast.error(e.response?.data?.error || "Something went wrong");
+            } else {
+                console.error("Unexpected Error:", e);
+                toast.error("An unexpected error occurred");
+            }
         }
     };
     

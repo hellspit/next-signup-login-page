@@ -1,13 +1,17 @@
 import { NextRequest } from "next/server";
-import  Jwt  from "jsonwebtoken";
+import Jwt, { JwtPayload } from "jsonwebtoken";
 
-export const getDataFromToken = (request: NextRequest) => {
-    try{
-       const token = request.cookies.get('token')?.value || "";
-       const decoded:any = Jwt.verify(token, process.env.TOKEN_SECRET!)
-        return decoded.id;
-
-    }catch(error:any){
-        throw new Error(error.message);
+export const getDataFromToken = (request: NextRequest): string => {
+    try {
+        const token = request.cookies.get('token')?.value || "";
+        const decoded = Jwt.verify(token, process.env.TOKEN_SECRET!) as JwtPayload;
+        
+        if (!decoded || typeof decoded !== "object" || !decoded.id) {
+            throw new Error("Invalid token structure");
+        }
+        
+        return decoded.id as string;
+    } catch (error) {
+        throw new Error(error instanceof Error ? error.message : "Token verification failed");
     }
-}
+};

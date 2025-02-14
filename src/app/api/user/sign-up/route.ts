@@ -2,12 +2,11 @@ import { connect } from "@/dbconfig/dbconfig";
 import User from "@/models/userModel";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import { send } from "process";
 import { sendMail } from "@/healper/mailer";
 
 connect();
 
-export async function POST(req: NextRequest) { // Use uppercase "POST"
+export async function POST(req: NextRequest) {
     try {
         const reqBody = await req.json();
         const { username, email, password } = reqBody;
@@ -29,15 +28,23 @@ export async function POST(req: NextRequest) { // Use uppercase "POST"
 
         console.log("User created:", savedUser); // Debugging
 
-        await sendMail({ email, emailType: 'verify', userId: savedUser._id });
-        return NextResponse.json({
-            message: "User created successfully",
-            success: true,
-            user: savedUser,
-        }, { status: 201 });
+        await sendMail({ email, emailType: "verify", userId: savedUser._id });
+        return NextResponse.json(
+            {
+                message: "User created successfully",
+                success: true,
+                user: savedUser,
+            },
+            { status: 201 }
+        );
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Error in sign-up:", error);
-        return NextResponse.json({ error: error.message }, { status: 500 });
+
+        if (error instanceof Error) {
+            return NextResponse.json({ error: error.message }, { status: 500 });
+        }
+
+        return NextResponse.json({ error: "An unknown error occurred" }, { status: 500 });
     }
 }
