@@ -1,9 +1,9 @@
 interface UserProfilePageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
-export default function UserProfilePage({ params }: UserProfilePageProps) {
-  const { id } = params;
+export default async function UserProfilePage({ params }: UserProfilePageProps) {
+  const { id } = await params;
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 bg-gray-900 text-white">
