@@ -2,6 +2,7 @@ import nodemailer from 'nodemailer';
 import User from '@/models/userModel';
 import bcryptjs from 'bcryptjs';
 import dotenv from 'dotenv';
+import { SentMessageInfo } from "nodemailer";
 
 dotenv.config();
 
@@ -11,7 +12,7 @@ interface SendMailParams {
     userId: string;
 }
 
-export const sendMail = async ({ email, emailType, userId }: SendMailParams): Promise<any> => {
+export const sendMail = async ({ email, emailType, userId }: SendMailParams): Promise<SentMessageInfo> => {
     try {
         const hashedToken = await bcryptjs.hash(userId.toString(), 10);
 

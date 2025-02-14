@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 export default function Home() {
@@ -22,7 +21,7 @@ export default function Home() {
       onClick={want} 
       className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700"
       >
-      Don't have an account
+      Not have an account
       </button>
     </div>
   );
